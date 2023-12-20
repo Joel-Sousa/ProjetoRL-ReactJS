@@ -1,0 +1,19 @@
+ 
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+}
+
+.conteudo{
+    background-color: #016f72;
+    color: white;
+    flex-grow: 1;
+}
+
