@@ -6,11 +6,12 @@ import usuarioService from './usuario.service';
 import { Edit } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Toast from '../../components/Toast/Toast';
+import { ListUsuarioType } from '../../types/types';
 
 export default function ListUsuario() {
 
     const navigate = useNavigate();
-    const [listUsuario, setListUsuario] = useState([] as any);
+    const [listUsuario, setListUsuario] = useState([]);
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
@@ -21,7 +22,7 @@ export default function ListUsuario() {
         setListUsuario(resp.usuario);
     }
 
-    const deleteUsuarioById = async (id: any) => {
+    const deleteUsuarioById = async (id: number) => {
         const alertConfirm = window.confirm('Deseja mesmo remover este usuário?');
         if (alertConfirm) {
             const resp = await usuarioService.deleteUsuarioById(id);
@@ -63,7 +64,7 @@ export default function ListUsuario() {
                             </thead>
                             <tbody>
                                 {listUsuario.length > 0 ?
-                                    listUsuario.map((e: any, i: any) =>
+                                    listUsuario.map((e: ListUsuarioType, i: number) =>
                                         <tr key={i}>
                                             <td>{e.idUsuario}</td>
                                             <td>{e.nome}</td>

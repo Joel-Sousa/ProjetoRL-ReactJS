@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './paginaInicial.module.css'
 
-
-export default function PaginaInicial(props: any) {
+export default function PaginaInicial() {
 
    return (
       <>

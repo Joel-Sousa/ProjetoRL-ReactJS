@@ -1,9 +1,10 @@
 import React from 'react';
 import api from '../../../config/api.service';
+import { UsuarioType } from '../../types/types';
 
 class Usuario {
 
-    async createUsuario(data: any) {
+    async createUsuario(data: UsuarioType) {
         const resp = await api.post('createUsuario', data)
             .then((resp) => resp.data)
             .catch((err) => err.response.data.message);
@@ -19,7 +20,7 @@ class Usuario {
         return resp;
     }
 
-    async getUsuarioById(id: any) {
+    async getUsuarioById(id: number) {
         const resp = await api.get('getUsuarioById', { params: { id } })
             .then((resp) => resp.data)
             .catch((err) => err.response.data.message);
@@ -27,7 +28,7 @@ class Usuario {
         return resp;
     }
 
-    async updateUsuario(data: any) {
+    async updateUsuario(data: UsuarioType) {
         const resp = await api.put('updateUsuario', data)
             .then((resp) => resp.data)
             .catch((err) => err.response.data.message);
@@ -35,7 +36,7 @@ class Usuario {
         return resp;
     }
 
-    async deleteUsuarioById(id: any){
+    async deleteUsuarioById(id: number){
         const resp = await api.delete('deleteUsuarioById', {params: {id}})
         .then((resp) => resp.data)
         .catch((err) => err.response.data.message);

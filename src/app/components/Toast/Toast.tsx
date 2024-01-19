@@ -1,7 +1,8 @@
 import React from 'react';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { ToastType } from '../../types/types';
 
-export default function Toast(props: any) {
+export default function Toast(props: ToastType) {
     
 if(props.open){
     const Toast = Swal.mixin({
@@ -14,10 +15,10 @@ if(props.open){
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-    })
+    });
     
     Toast.fire({
-        icon: props.icon,
+        icon: props.icon as SweetAlertIcon,
         title: props.mensagem
     })
     

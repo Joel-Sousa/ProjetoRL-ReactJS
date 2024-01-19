@@ -7,17 +7,19 @@ import CardContent from '@mui/material/CardContent';
 import usuarioService from './usuario.service';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../components/Toast/Toast';
+import { UsuarioType } from '../../types/types';
 
 export default function CreateUsuario() {
 
     const navigate = useNavigate();
-    const { register, handleSubmit, setError, formState: { errors } } = useForm();
+    const { register, handleSubmit } = useForm<UsuarioType>();
+    const { setError, formState: { errors } } = useForm();
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: UsuarioType) => {
 
         const resp = await usuarioService.createUsuario(data);
 
@@ -26,6 +28,10 @@ export default function CreateUsuario() {
             setToastIcon('success');
             setIsToast(true);
             navigate('/');
+        }else if(resp.error.erro){
+            resp.error.data.forEach((e: {label: string, erro: string}) => {
+                setError(e.label, {message: e.erro})
+              });
         }
 
         setIsToast(false);
@@ -41,35 +47,35 @@ export default function CreateUsuario() {
                     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
                         <div className='row m-1'>
                             <TextField
-                                {...register('nome', { required: true })}
+                                {...register('nome')}
                                 className='mb-2'
                                 label="Nome (*)"
                                 variant="outlined"
                                 type='text'
                                 error={errors.nome ? true : false}
-                                helperText={errors.nome && 'Campo de nome invalido!'}
+                                helperText={errors.nome && errors.nome.message?.toString()}
                                 autoComplete='off'
                             />
 
                             <TextField
-                                {...register('email', { required: true })}
+                                {...register('email')}
                                 className='mb-2'
                                 label="Email (*)"
                                 variant="outlined"
                                 type='text'
                                 error={errors.email ? true : false}
-                                helperText={errors.email && 'Campo de email invalido!'}
+                                helperText={errors.email && errors.email.message?.toString()}
                                 autoComplete='off'
                             />
 
                             <TextField
-                                {...register('password', { required: true })}
+                                {...register('password')}
                                 className='mb-2'
                                 label="Senha (*)"
                                 variant="outlined"
                                 type='password'
                                 error={errors.password ? true : false}
-                                helperText={errors.password && 'Campo de senha invalido!'}
+                                helperText={errors.password && errors.password.message?.toString()}
                                 autoComplete='off'
                             />
                             <div>

@@ -4,18 +4,24 @@ import moment from 'moment';
 import { Subject } from 'rxjs';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LoginType } from '../../types/types';
 
 class Login {
 
     protected subject = new Subject();
     protected cookies = new Cookies();
 
-    async login(data: any) {
+    async login(data: LoginType) {
 
         const resp = await api.post("login", data)
             .then((resp) => {
                 if (resp.data.token) {
+                    // this.cookies.set('user', JSON.stringify(resp.data.user), { path: '/', expires: moment().add(8, 'hour').toDate() });
+
                     this.cookies.set('token', JSON.stringify(resp.data.token), { path: '/', expires: moment().add(8, 'hour').toDate() });
+                    this.cookies.set('usuario', JSON.stringify(resp.data.user.usuario.nome), { path: '/', expires: moment().add(8, 'hour').toDate() });
+                    this.cookies.set('perfil', JSON.stringify(resp.data.user.role.nome), { path: '/', expires: moment().add(8, 'hour').toDate() });
+
                     this.observable.setToken(resp.data.token);
                 }
                 return resp.data;
@@ -25,11 +31,15 @@ class Login {
     }
 
     async permission() {
-        const resp = await api.get("permission")
+        const token = this.cookies.get('token');
+        
+        if(!!token){
+            const resp = await api.get("permission")
             .then((resp) => resp.data)
             .catch((err) => err.response.data.message);
-
-        return resp;
+            
+            return resp;
+        }
     }
 
     async logout() {
@@ -38,7 +48,11 @@ class Login {
             .then((resp) => resp.data)
             .catch((err) => err.response.data.message);
 
+        // this.cookies.remove('user');
+
         this.cookies.remove('token');
+        this.cookies.remove('usuario');
+        this.cookies.remove('perfil');
         this.observable.clearToken();
 
         return resp;
@@ -52,7 +66,7 @@ class Login {
     }
 
     observable = {
-        setToken: (token: any) => this.subject.next(token),
+        setToken: (token: string) => this.subject.next(token),
         clearToken: () => this.subject.next(null),
         onToken: () => this.subject.asObservable()
     }
@@ -62,7 +76,7 @@ class Login {
         const [isToken, setIsToken] = useState(false);
 
         useEffect(() => {
-            this.observable.onToken().subscribe((token: any) => {
+            this.observable.onToken().subscribe((token: unknown) => {
                 if (token) {
                     setIsToken(true);
                 } else if (token === null) {

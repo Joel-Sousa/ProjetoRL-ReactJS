@@ -7,19 +7,24 @@ import CardContent from '@mui/material/CardContent';
 import usuarioService from './usuario.service';
 import Toast from '../../components/Toast/Toast';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UsuarioType } from '../../types/types';
 
 export default function EditUsuario() {
 
-    const navigate = useNavigate();
-    const { register, handleSubmit, setError,watch, setValue, formState: { errors } } = useForm();
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const { register, handleSubmit, setValue } = useForm<UsuarioType>();
+    const { setError, formState: { errors } } = useForm();
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
-    const [idUsuario, setIdUsuario] = useState('');
+    const [idUsuario, setIdUsuario] = useState(0);
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: UsuarioType) => {
+        data.id = idUsuario;
+
         const resp = await usuarioService.updateUsuario(data);
 
         if (resp.response) {
@@ -27,21 +32,24 @@ export default function EditUsuario() {
             setToastIcon('success');
             setIsToast(true);
             navigate('/listUsuario');
+        } else if (resp.error.erro) {
+            resp.error.data.forEach((e: { label: string, erro: string }) => {
+                setError(e.label, { message: e.erro })
+            });
         }
 
         setIsToast(false);
     }
 
     useEffect(() => {
-        const id = location.pathname.split('/')[2];
+        const id = parseInt(location.pathname.split('/')[2]);
         setIdUsuario(id);
 
-        if (id != '') {
+        if (id != 0) {
             (async () => {
                 const resp = await usuarioService.getUsuarioById(id);
 
                 if (!!resp.usuario) {
-                    setValue('id', resp.usuario.user.id);
                     setValue('nome', resp.usuario.nome);
                     setValue('email', resp.usuario.user.email);
                 }
@@ -59,27 +67,26 @@ export default function EditUsuario() {
                     <br />
                     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
                         <div className='row m-1'>
-                            <input {...register('id', { required: true })} hidden value={watch('id')} />
                             <TextField
-                                {...register('nome', { required: true })}
+                                {...register('nome')}
                                 className='mb-2 mt-2'
                                 label="Nome (*)"
                                 variant="outlined"
                                 type='text'
                                 error={errors.nome ? true : false}
-                                helperText={errors.nome && 'Campo de nome invalido!'}
+                                helperText={errors.nome && errors.nome.message?.toString()}
                                 autoComplete='off'
                                 InputLabelProps={{ shrink: true }}
                             />
 
                             <TextField
-                                {...register('email', { required: true })}
+                                {...register('email')}
                                 className='mb-2'
                                 label="Email (*)"
                                 variant="outlined"
                                 type='text'
                                 error={errors.email ? true : false}
-                                helperText={errors.email && 'Campo de email invalido!'}
+                                helperText={errors.email && errors.email.message?.toString()}
                                 autoComplete='off'
                                 InputLabelProps={{ shrink: true }}
                             />
@@ -91,7 +98,7 @@ export default function EditUsuario() {
                                 variant="outlined"
                                 type='password'
                                 error={errors.password ? true : false}
-                                helperText={errors.password && 'Campo de senha invalido!'}
+                                helperText={errors.password && errors.password.message?.toString()}
                                 autoComplete='off'
                                 InputLabelProps={{ shrink: true }}
                             />

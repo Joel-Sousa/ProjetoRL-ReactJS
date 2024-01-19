@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { AppBar, Toolbar, CssBaseline, Typography, Dialog, DialogContent } from "@mui/material";
 import { makeStyles } from '@mui/styles'
 import { Link } from "react-router-dom";
 import { Button } from '@mui/material';
 import loginService from '../../paginas/login/login.service';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import styles from './cabecalho.module.css';
 import Login from '../../paginas/login/Login';
-import { role } from '../../util/Permissao'
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles(() => ({
     header: {
         background: '#424242',
     },
     navlinks: {
         display: "flex",
-        // justifyContent: 'center',
         textDecoration: "none",
     },
     logo: {
@@ -33,14 +29,11 @@ const useStyles = makeStyles((theme: any) => ({
 export default function Cabecalho() {
 
     const classes = useStyles();
-    // const cookies = new Cookies();
     const isLogged = loginService.isLogged();
-    const [nome, setNome] = useState('');
     const [open, setOpen] = useState(false);
     
     const sair = async () => {
         const resp = await loginService.logout();
-        console.log(resp.message);
     }
     
     const handleClickOpen = () => {
@@ -51,7 +44,7 @@ export default function Cabecalho() {
         setOpen(false);
     };
 
-    const fecharDialog = (status: any) => {
+    const fecharDialog = (status: boolean) => {
         setOpen(status);
     }
     
@@ -61,7 +54,6 @@ export default function Cabecalho() {
         if (isLogged) {
             const resp = await loginService.permission();
             setIdRole(resp?.user?.idRole);
-            setNome(resp?.user?.nome);
         }
     })(isLogged)
 
@@ -73,7 +65,7 @@ export default function Cabecalho() {
                     <Toolbar className={classes.header}>
                         <Typography variant="h4" className={classes.logo}>
                             {isLogged ?
-                                <Link to='/paginaInicial' className={classes.link}>Sys-{`${nome ?? ''}`}</Link>
+                                <Link to='/paginaInicial' className={classes.link}>Sys-{`'tst'}`}</Link>
                                 :
                                 <Link to='/' className={classes.link}>Sys</Link>
                             }

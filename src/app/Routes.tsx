@@ -14,7 +14,7 @@ import EditUsuario from './paginas/usuario/EditUsuario';
 const Routs = () => {
 
     const isLogged = loginService.isLogged();
-    
+
     const [idRole, setIdRole] = useState(0);
 
     (async (isLogged) => {
@@ -23,7 +23,12 @@ const Routs = () => {
             setIdRole(resp?.user?.idRole);
         }
     })(isLogged)
-    
+
+    const [open, setOpen] = useState(false);
+
+    const fecharDialog = (status: boolean) => {
+        setOpen(status);
+    }
 
     return (
         <div id={styles.app}>
@@ -32,17 +37,17 @@ const Routs = () => {
                 <div className={styles.conteudo}>
                     <Routes>
                         <Route path='/' element={<Inicio />} />
-                        <Route path='/login' element={<Login />} />
+                        <Route path='/login' element={<Login fecharDialog={fecharDialog} />} />
                         <Route path='/createUsuario' element={<CreateUsuario />} />
                         {isLogged &&
                             <>
                                 <Route path='/paginaInicial' element={<PaginaInicial />} />
-                            {idRole == 1 &&
-                            <>
-                                <Route path='/listUsuario' element={<ListUsuario />} />
-                                <Route path='/editUsuario/*' element={<EditUsuario />} />
-                            </>
-                            }
+                                {idRole == 1 &&
+                                    <>
+                                        <Route path='/listUsuario' element={<ListUsuario />} />
+                                        <Route path='/editUsuario/*' element={<EditUsuario />} />
+                                    </>
+                                }
                             </>
                         }
                     </Routes>
