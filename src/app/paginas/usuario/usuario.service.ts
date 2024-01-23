@@ -1,4 +1,3 @@
-import React from 'react';
 import api from '../../../config/api.service';
 import { UsuarioType } from '../../types/types';
 

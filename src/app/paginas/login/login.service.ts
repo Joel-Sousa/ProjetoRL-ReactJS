@@ -2,8 +2,6 @@ import api from '../../../config/api.service';
 import Cookies from 'universal-cookie';
 import moment from 'moment';
 import { Subject } from 'rxjs';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LoginType } from '../../types/types';
 
 class Login {
@@ -71,25 +69,25 @@ class Login {
         onToken: () => this.subject.asObservable()
     }
 
-    isLogged() {
-        const navigate = useNavigate();
-        const [isToken, setIsToken] = useState(false);
+    // isLogged() {
+    //     const navigate = useNavigate();
+    //     const [isToken, setIsToken] = useState(false);
 
-        useEffect(() => {
-            this.observable.onToken().subscribe((token: unknown) => {
-                if (token) {
-                    setIsToken(true);
-                } else if (token === null) {
-                    setIsToken(false);
-                    navigate('/');
-                }
-            });
+    //     useEffect(() => {
+    //         this.observable.onToken().subscribe((token: unknown) => {
+    //             if (token) {
+    //                 setIsToken(true);
+    //             } else if (token === null) {
+    //                 setIsToken(false);
+    //                 navigate('/');
+    //             }
+    //         });
 
-            this.observable.setToken(this.getToken())
-        }, []);
+    //         this.observable.setToken(this.getToken())
+    //     }, []);
 
-        return isToken;
-    }
+    //     return isToken;
+    // }
 }
 
 export default new Login();

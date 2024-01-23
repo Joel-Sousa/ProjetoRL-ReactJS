@@ -1,11 +1,11 @@
-import React, {useEffect, useState } from 'react';
-import { AppBar, Toolbar, CssBaseline, Typography, Dialog, DialogContent } from "@mui/material";
+import React, { useContext, useEffect, useState } from 'react';
+import { AppBar, Toolbar, CssBaseline, Typography} from "@mui/material";
 import { makeStyles } from '@mui/styles'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
 import loginService from '../../paginas/login/login.service';
 import styles from './cabecalho.module.css';
-import Login from '../../paginas/login/Login';
+import { UserContext } from '../../contexts/UserContext';
 
 const useStyles = makeStyles(() => ({
     header: {
@@ -27,35 +27,44 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Cabecalho() {
-
-    const classes = useStyles();
-    const isLogged = loginService.isLogged();
-    const [open, setOpen] = useState(false);
     
+    const classes = useStyles();
+    // const isLogged = loginService.isLogged();
+    
+    const [isToken, setIsToken] = useState(false);
+    const navigate = useNavigate();
+    const { userData } = useContext(UserContext);
+    // console.log("userData", userData);
+
+    const [idRole, setIdRole] = useState(0);
+
+    useEffect(() => {
+        loginService.observable.onToken().subscribe((token: any) => {
+            if (token) {
+                setIsToken(true);
+                // console.log("isToken:", isToken);
+            }
+            if (token === null) {
+                setIsToken(false);
+                // console.log("isToken:", isToken);
+                navigate('/');
+            }
+        });
+        loginService.observable.setToken(loginService.getToken())
+
+    }, []);
+
     const sair = async () => {
         const resp = await loginService.logout();
     }
-    
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const fecharDialog = (status: boolean) => {
-        setOpen(status);
-    }
-    
-    const [idRole, setIdRole] = useState(0);
-    
-    (async (isLogged) => {
-        if (isLogged) {
+    (async (isToken) => {
+        if (isToken) {
             const resp = await loginService.permission();
             setIdRole(resp?.user?.idRole);
         }
-    })(isLogged)
+    })(isToken)
+
 
     return (
         <>
@@ -64,17 +73,17 @@ export default function Cabecalho() {
                     <CssBaseline />
                     <Toolbar className={classes.header}>
                         <Typography variant="h4" className={classes.logo}>
-                            {isLogged ?
-                                <Link to='/paginaInicial' className={classes.link}>Sys-{`'tst'}`}</Link>
+                            {isToken ?
+                                <Link to='/paginaInicial' className={classes.link}>Sys-{userData.nome + ' | ' + userData.perfil}</Link>
                                 :
                                 <Link to='/' className={classes.link}>Sys</Link>
                             }
                         </Typography>
                         <div className={classes.navlinks}>
                             <>
-                                {isLogged ?
+                                {isToken ?
                                     <>
-                                        {idRole == 1 &&
+                                        {idRole ==+ 1 &&
                                             <Link to='/listUsuario'>
                                                 <Button variant="contained" >Listar usuarios</Button>
                                             </Link>
@@ -90,7 +99,10 @@ export default function Cabecalho() {
                                             <Button className='w-100' variant="contained" >+Usuario</Button>
                                         </Link>
                                         &nbsp;
-                                        <Button className='w-100' variant="contained" onClick={handleClickOpen}>Login</Button>
+                                        {/* <Button className='w-100' variant="contained" onClick={handleClickOpen}>Login</Button> */}
+                                        <Link to='/login'>
+                                            <Button className='w-100' variant="contained" >Login</Button>
+                                        </Link>
                                     </>
                                 }
                             </>
@@ -98,17 +110,6 @@ export default function Cabecalho() {
                     </Toolbar>
                 </AppBar>
             </div>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogContent>
-                    <Login fecharDialog={fecharDialog} />
-                </DialogContent>
-
-            </Dialog>
         </>
     )
 }

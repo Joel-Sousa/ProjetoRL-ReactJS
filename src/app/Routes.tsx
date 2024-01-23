@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Cabecalho from './layout/cabecalho/Cabecalho';
 import Inicio from '../app/paginas/inicio/Inicio';
 import Login from '../app/paginas/login/Login';
@@ -13,22 +13,35 @@ import EditUsuario from './paginas/usuario/EditUsuario';
 
 const Routs = () => {
 
-    const isLogged = loginService.isLogged();
+    // const isLogged = loginService.isLogged();
+
+    const [isToken, setIsToken] = useState(false);
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        loginService.observable.onToken().subscribe((token: any) => {
+            if (token) {
+                setIsToken(true);
+                //    console.log("isToken:", isToken);
+            }
+            if (token === null) {
+                setIsToken(false);
+                //    console.log("isToken:", isToke5n);
+               navigate('/');
+           }
+       });
+       loginService.observable.setToken(loginService.getToken())
+
+   }, []);
 
     const [idRole, setIdRole] = useState(0);
 
-    (async (isLogged) => {
-        if (isLogged) {
+    (async (isToken) => {
+        if (isToken) {
             const resp = await loginService.permission();
             setIdRole(resp?.user?.idRole);
         }
-    })(isLogged)
-
-    const [open, setOpen] = useState(false);
-
-    const fecharDialog = (status: boolean) => {
-        setOpen(status);
-    }
+    })(isToken)
 
     return (
         <div id={styles.app}>
@@ -37,12 +50,12 @@ const Routs = () => {
                 <div className={styles.conteudo}>
                     <Routes>
                         <Route path='/' element={<Inicio />} />
-                        <Route path='/login' element={<Login fecharDialog={fecharDialog} />} />
+                        <Route path='/login' element={<Login/>} />
                         <Route path='/createUsuario' element={<CreateUsuario />} />
-                        {isLogged &&
+                        {isToken &&
                             <>
                                 <Route path='/paginaInicial' element={<PaginaInicial />} />
-                                {idRole == 1 &&
+                                {idRole === 1 &&
                                     <>
                                         <Route path='/listUsuario' element={<ListUsuario />} />
                                         <Route path='/editUsuario/*' element={<EditUsuario />} />

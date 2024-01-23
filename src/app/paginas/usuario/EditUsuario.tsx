@@ -45,7 +45,7 @@ export default function EditUsuario() {
         const id = parseInt(location.pathname.split('/')[2]);
         setIdUsuario(id);
 
-        if (id != 0) {
+        if (id !== 0) {
             (async () => {
                 const resp = await usuarioService.getUsuarioById(id);
 

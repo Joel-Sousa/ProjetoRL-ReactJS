@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import styles from './paginaInicial.module.css'
+import React from 'react';
 
 export default function PaginaInicial() {
 
