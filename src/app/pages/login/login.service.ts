@@ -17,8 +17,8 @@ class Login {
                     // this.cookies.set('user', JSON.stringify(resp.data.user), { path: '/', expires: moment().add(8, 'hour').toDate() });
 
                     this.cookies.set('token', JSON.stringify(resp.data.token), { path: '/', expires: moment().add(8, 'hour').toDate() });
-                    this.cookies.set('usuario', JSON.stringify(resp.data.user.usuario.nome), { path: '/', expires: moment().add(8, 'hour').toDate() });
-                    this.cookies.set('perfil', JSON.stringify(resp.data.user.role.nome), { path: '/', expires: moment().add(8, 'hour').toDate() });
+                    this.cookies.set('name', JSON.stringify(resp.data.user.user_data.name), { path: '/', expires: moment().add(8, 'hour').toDate() });
+                    this.cookies.set('profile', JSON.stringify(resp.data.user.role.name), { path: '/', expires: moment().add(8, 'hour').toDate() });
 
                     this.observable.setToken(resp.data.token);
                 }
@@ -42,16 +42,16 @@ class Login {
 
     async logout() {
 
+        // this.cookies.remove('user');
+        
+        this.cookies.remove('token');
+        this.cookies.remove('name');
+        this.cookies.remove('profile');
+        this.observable.clearToken();
+
         const resp = await api.post("logout")
             .then((resp) => resp.data)
             .catch((err) => err.response.data.message);
-
-        // this.cookies.remove('user');
-
-        this.cookies.remove('token');
-        this.cookies.remove('usuario');
-        this.cookies.remove('perfil');
-        this.observable.clearToken();
 
         return resp;
     }

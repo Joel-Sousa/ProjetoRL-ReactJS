@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PaginaInicial() {
+export default function HomePage() {
 
    return (
       <>

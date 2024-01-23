@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Login from '../app/paginas/login/login.service';
+import userService from '../app/pages/login/login.service';
 import {env} from '../env/env';
 
 const configValue: string = (env.baseURL as string);
@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async config => {
-    const token = Login.getToken();
+    const token = userService.getToken();
     if (token) {
         config.headers = {
             Accept: 'application/json',

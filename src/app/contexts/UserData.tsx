@@ -7,7 +7,7 @@ export default function UserData() {
     const {state, setState} = useContext(DataContext);
     
     useEffect(() => {
-        setState({...state, nome: cookies.get('usuario')})
+        setState({...state, name: cookies.get('name')})
     // },[])
     },[cookies.get('token')])
 

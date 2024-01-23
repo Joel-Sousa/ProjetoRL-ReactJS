@@ -3,11 +3,10 @@ import { useForm } from 'react-hook-form';
 import loginService from './login.service';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import { Button, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardContent, Typography } from '@mui/material';
 import { LoginType } from '../../types/types';
 import { UserContext } from '../../contexts/UserContext';
 import styles from './login.module.css'
-import { Card } from 'react-bootstrap';
 
 export default function Login() {
 
@@ -23,7 +22,7 @@ export default function Login() {
     if (resp.token) {
       setUserData();
 
-      navigate('/paginaInicial');
+      navigate('/homePage');
     } else if (resp.error.erro) {
       resp.error.data.forEach((e: { label: string, erro: string }) => {
         setError(e.label, { message: e.erro })

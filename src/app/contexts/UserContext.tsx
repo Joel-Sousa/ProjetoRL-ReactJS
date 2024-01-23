@@ -3,15 +3,15 @@ import Cookies from 'universal-cookie';
 
 type UserType = {
     userData: {
-        nome: string;
-        perfil: string;
+        name: string;
+        profile: string;
     };
     setUserData: () => void;
 }
 
 interface UserData {
-    nome: string,
-    perfil: string,
+    name: string,
+    profile: string,
 }
 
 export const UserContext = createContext({} as UserType);
@@ -24,8 +24,8 @@ export const ContextUser = ({ children }: { children: ReactNode }) => {
 
     function setUserData() {
         const data = {
-            nome: cookies.get('usuario'),
-            perfil: cookies.get('perfil'),
+            name: cookies.get('name'),
+            profile: cookies.get('profile'),
         };
 
         if (cookies.get('token'))

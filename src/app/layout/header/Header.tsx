@@ -3,8 +3,8 @@ import { AppBar, Toolbar, CssBaseline, Typography} from "@mui/material";
 import { makeStyles } from '@mui/styles'
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
-import loginService from '../../paginas/login/login.service';
-import styles from './cabecalho.module.css';
+import loginService from '../../pages/login/login.service';
+import styles from './header.module.css';
 import { UserContext } from '../../contexts/UserContext';
 
 const useStyles = makeStyles(() => ({
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-export default function Cabecalho() {
+export default function Header() {
     
     const classes = useStyles();
     // const isLogged = loginService.isLogged();
@@ -54,7 +54,7 @@ export default function Cabecalho() {
 
     }, []);
 
-    const sair = async () => {
+    const exit = async () => {
         const resp = await loginService.logout();
     }
 
@@ -68,13 +68,13 @@ export default function Cabecalho() {
 
     return (
         <>
-            <div className={styles.cabecalho}>
+            <div className={styles.header}>
                 <AppBar position="static">
                     <CssBaseline />
                     <Toolbar className={classes.header}>
                         <Typography variant="h4" className={classes.logo}>
                             {isToken ?
-                                <Link to='/paginaInicial' className={classes.link}>Sys-{userData.nome + ' | ' + userData.perfil}</Link>
+                                <Link to='/homePage' className={classes.link}>Sys-{userData.name + ' | ' + userData.profile}</Link>
                                 :
                                 <Link to='/' className={classes.link}>Sys</Link>
                             }
@@ -84,18 +84,18 @@ export default function Cabecalho() {
                                 {isToken ?
                                     <>
                                         {idRole ==+ 1 &&
-                                            <Link to='/listUsuario'>
+                                            <Link to='/listUser'>
                                                 <Button variant="contained" >Listar usuarios</Button>
                                             </Link>
                                         }
                                         &nbsp;
                                         <span className={classes.link}>
-                                            <Button className={classes.link} variant="contained" onClick={sair} >Sair</Button>
+                                            <Button className={classes.link} variant="contained" onClick={exit} >Sair</Button>
                                         </span>
                                     </>
                                     :
                                     <>
-                                        <Link to='/createUsuario'>
+                                        <Link to='/createUser'>
                                             <Button className='w-100' variant="contained" >+Usuario</Button>
                                         </Link>
                                         &nbsp;

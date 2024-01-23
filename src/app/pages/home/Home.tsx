@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Inicio() {
+export default function Home() {
   
    return (
       <>

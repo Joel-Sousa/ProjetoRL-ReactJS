@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import styles from './createUsuario.module.css';
+import styles from './createUser.module.css';
 import { Button, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import usuarioService from './usuario.service';
+import userService from './user.service';
 import Toast from '../../components/Toast/Toast';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { UsuarioType } from '../../types/types';
+import { UserType } from '../../types/types';
 
-export default function EditUsuario() {
+export default function EditUser() {
 
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { register, handleSubmit, setValue } = useForm<UsuarioType>();
+    const { register, handleSubmit, setValue } = useForm<UserType>();
     const { setError, formState: { errors } } = useForm();
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
-    const [idUsuario, setIdUsuario] = useState(0);
+    const [idUser, setIdUser] = useState(0);
 
-    const onSubmit = async (data: UsuarioType) => {
-        data.id = idUsuario;
+    const onSubmit = async (data: UserType) => {
+        data.id = idUser;
 
-        const resp = await usuarioService.updateUsuario(data);
+        const resp = await userService.updateUserData(data);
 
         if (resp.response) {
             setToastMessage('Usuário alterado com sucesso!');
             setToastIcon('success');
             setIsToast(true);
-            navigate('/listUsuario');
+            navigate('/listUser');
         } else if (resp.error.erro) {
             resp.error.data.forEach((e: { label: string, erro: string }) => {
                 setError(e.label, { message: e.erro })
@@ -43,15 +43,15 @@ export default function EditUsuario() {
 
     useEffect(() => {
         const id = parseInt(location.pathname.split('/')[2]);
-        setIdUsuario(id);
+        setIdUser(id);
 
         if (id !== 0) {
             (async () => {
-                const resp = await usuarioService.getUsuarioById(id);
+                const resp = await userService.getUserDataById(id);
 
-                if (!!resp.usuario) {
-                    setValue('nome', resp.usuario.nome);
-                    setValue('email', resp.usuario.user.email);
+                if (!!resp.userData) {
+                    setValue('name', resp.userData.name);
+                    setValue('email', resp.userData.user.email);
                 }
             })()
         }
@@ -68,13 +68,13 @@ export default function EditUsuario() {
                     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
                         <div className='row m-1'>
                             <TextField
-                                {...register('nome')}
+                                {...register('name')}
                                 className='mb-2 mt-2'
                                 label="Nome (*)"
                                 variant="outlined"
                                 type='text'
-                                error={errors.nome ? true : false}
-                                helperText={errors.nome && errors.nome.message?.toString()}
+                                error={errors.name ? true : false}
+                                helperText={errors.name && errors.name.message?.toString()}
                                 autoComplete='off'
                                 InputLabelProps={{ shrink: true }}
                             />

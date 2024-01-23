@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import styles from './createUsuario.module.css';
+import styles from './createUser.module.css';
 import { Button, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import usuarioService from './usuario.service';
+import userService from './user.service';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../components/Toast/Toast';
-import { UsuarioType } from '../../types/types';
+import { UserType } from '../../types/types';
 
-export default function CreateUsuario() {
+export default function CreateUser() {
 
     const navigate = useNavigate();
-    const { register, handleSubmit } = useForm<UsuarioType>();
+    const { register, handleSubmit } = useForm<UserType>();
     const { setError, formState: { errors } } = useForm();
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
 
-    const onSubmit = async (data: UsuarioType) => {
+    const onSubmit = async (data: UserType) => {
 
-        const resp = await usuarioService.createUsuario(data);
+        const resp = await userService.createUserData(data);
 
         if (resp.response) {
             setToastMessage('Usuário criado com sucesso!');
@@ -47,13 +47,13 @@ export default function CreateUsuario() {
                     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
                         <div className='row m-1'>
                             <TextField
-                                {...register('nome')}
+                                {...register('name')}
                                 className='mb-2'
                                 label="Nome (*)"
                                 variant="outlined"
                                 type='text'
-                                error={errors.nome ? true : false}
-                                helperText={errors.nome && errors.nome.message?.toString()}
+                                error={errors.name ? true : false}
+                                helperText={errors.name && errors.name.message?.toString()}
                                 autoComplete='off'
                             />
 

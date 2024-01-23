@@ -1,44 +1,44 @@
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import styles from './listUsuario.module.css';
+import styles from './listUser.module.css';
 import { useNavigate } from 'react-router-dom';
-import usuarioService from './usuario.service';
+import userService from './user.service';
 import { Edit } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Toast from '../../components/Toast/Toast';
-import { ListUsuarioType } from '../../types/types';
+import { ListUserType } from '../../types/types';
 
-export default function ListUsuario() {
+export default function ListUser() {
 
     const navigate = useNavigate();
-    const [listUsuario, setListUsuario] = useState([]);
+    const [listUser, setListUser] = useState([]);
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
 
-    const listUsuarios = async () => {
-        const resp = await usuarioService.listUsuario();
-        setListUsuario(resp.usuario);
+    const listUsers = async () => {
+        const resp = await userService.listUserData();
+        setListUser(resp.userData);
     }
 
-    const deleteUsuarioById = async (id: number) => {
+    const deleteUserById = async (id: number) => {
         const alertConfirm = window.confirm('Deseja mesmo remover este usuário?');
         if (alertConfirm) {
-            const resp = await usuarioService.deleteUsuarioById(id);
+            const resp = await userService.deleteUserDataById(id);
 
             if (resp.response) {
                 setToastMessage('Usuário apagado com sucesso!');
                 setToastIcon('success');
                 setIsToast(true);
-                listUsuarios();
+                listUsers();
             }
         }
         setIsToast(false);
     }
 
     useEffect(() => {
-        listUsuarios();
+        listUsers();
     }, [])
 
     return (
@@ -63,15 +63,15 @@ export default function ListUsuario() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listUsuario.length > 0 ?
-                                    listUsuario.map((e: ListUsuarioType, i: number) =>
+                                {listUser.length > 0 ?
+                                    listUser.map((e: ListUserType, i: number) =>
                                         <tr key={i}>
-                                            <td>{e.idUsuario}</td>
-                                            <td>{e.nome}</td>
+                                            <td>{e.idUserData}</td>
+                                            <td>{e.name}</td>
                                             <td>{e.user.email}</td>
-                                            <td>{e.user.role.nome}</td>
-                                            <td><Button onClick={() => navigate('/editUsuario/' + e.user.id)}><Edit /></Button></td>
-                                            <td><Button onClick={() => deleteUsuarioById(e.user.id)}><DeleteIcon /></Button></td>
+                                            <td>{e.user.role.name}</td>
+                                            <td><Button onClick={() => navigate('/editUser/' + e.user.id)}><Edit /></Button></td>
+                                            <td><Button onClick={() => deleteUserById(e.user.id)}><DeleteIcon /></Button></td>
                                         </tr>
                                     )
                                     :
