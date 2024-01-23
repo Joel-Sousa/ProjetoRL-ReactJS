@@ -16,6 +16,10 @@ api.interceptors.request.use(async config => {
             ContentType: 'application/json',
             Authorization: `Bearer ${token}`,
         }
+
+        config.headers['Accept'] = 'application/json';
+        config.headers['ContentType'] = 'application/json';
+        config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
 });
