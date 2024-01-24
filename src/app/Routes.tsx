@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './layout/header/Header';
 import Home from '../app/pages/home/Home';
@@ -10,38 +10,18 @@ import Footer from './layout/footer/Footer';
 import CreateUser from './pages/user/CreateUser';
 import ListUser from './pages/user/ListUser';
 import EditUser from './pages/user/EditUser';
+import { UserContext } from './contexts/UserContext';
+
 
 const Routs = () => {
-
-    // const isLogged = loginService.isLogged();
-
-    const [isToken, setIsToken] = useState(false);
-    const navigate = useNavigate();
     
-    useEffect(() => {
-        loginService.observable.onToken().subscribe((token: any) => {
-            if (token) {
-                setIsToken(true);
-                //    console.log("isToken:", isToken);
-            }
-            if (token === null) {
-                setIsToken(false);
-                //    console.log("isToken:", isToke5n);
-               navigate('/');
-           }
-       });
-       loginService.observable.setToken(loginService.getToken())
+    const navigate = useNavigate();
+    const { isToken, idRole } = useContext(UserContext);
 
-   }, []);
+    useEffect(() =>{
+        if(!isToken ) navigate('/');
+    }, [isToken]);
 
-    const [idRole, setIdRole] = useState(0);
-
-    (async (isToken) => {
-        if (isToken) {
-            const resp = await loginService.permission();
-            setIdRole(resp?.user?.idRole);
-        }
-    })(isToken)
 
     return (
         <div id={styles.app}>

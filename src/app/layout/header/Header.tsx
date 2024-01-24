@@ -29,42 +29,12 @@ const useStyles = makeStyles(() => ({
 export default function Header() {
     
     const classes = useStyles();
-    // const isLogged = loginService.isLogged();
     
-    const [isToken, setIsToken] = useState(false);
-    const navigate = useNavigate();
-    const { userData } = useContext(UserContext);
-    // console.log("userData", userData);
-
-    const [idRole, setIdRole] = useState(0);
-
-    useEffect(() => {
-        loginService.observable.onToken().subscribe((token: any) => {
-            if (token) {
-                setIsToken(true);
-                // console.log("isToken:", isToken);
-            }
-            if (token === null) {
-                setIsToken(false);
-                // console.log("isToken:", isToken);
-                navigate('/');
-            }
-        });
-        loginService.observable.setToken(loginService.getToken())
-
-    }, []);
-
+    const { isToken, idRole, userData } = useContext(UserContext);
+    
     const exit = async () => {
         const resp = await loginService.logout();
     }
-
-    (async (isToken) => {
-        if (isToken) {
-            const resp = await loginService.permission();
-            setIdRole(resp?.user?.idRole);
-        }
-    })(isToken)
-
 
     return (
         <>
@@ -83,7 +53,7 @@ export default function Header() {
                             <>
                                 {isToken ?
                                     <>
-                                        {idRole ==+ 1 &&
+                                        {idRole === 1 &&
                                             <Link to='/listUser'>
                                                 <Button variant="contained" >Listar usuarios</Button>
                                             </Link>

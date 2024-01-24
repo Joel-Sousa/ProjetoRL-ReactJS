@@ -30,12 +30,12 @@ class Login {
 
     async permission() {
         const token = this.cookies.get('token');
-        
-        if(!!token){
+
+        if (!!token) {
             const resp = await api.get("permission")
-            .then((resp) => resp.data)
-            .catch((err) => err.response.data.message);
-            
+                .then((resp) => resp.data)
+                .catch((err) => err.response.data.message);
+
             return resp;
         }
     }
@@ -43,7 +43,7 @@ class Login {
     async logout() {
 
         // this.cookies.remove('user');
-        
+
         this.cookies.remove('token');
         this.cookies.remove('name');
         this.cookies.remove('profile');
@@ -88,6 +88,7 @@ class Login {
 
     //     return isToken;
     // }
+    
 }
 
 export default new Login();

@@ -17,9 +17,9 @@ api.interceptors.request.use(async config => {
             Authorization: `Bearer ${token}`,
         }
 
-        config.headers['Accept'] = 'application/json';
-        config.headers['ContentType'] = 'application/json';
-        config.headers['Authorization'] = `Bearer ${token}`;
+        // config.headers['Accept'] = 'application/json';
+        // config.headers['ContentType'] = 'application/json';
+        // config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
 });
