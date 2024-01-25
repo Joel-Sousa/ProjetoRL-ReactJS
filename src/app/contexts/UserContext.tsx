@@ -61,7 +61,7 @@ export const ContextUser = ({ children }: { children: ReactNode }) => {
     (async (isToken) => {
         if (isToken) {
             const resp = await loginService.permission();
-            setIdRole(resp?.user?.idRole);
+            setIdRole(resp.idRole);
         }
     })(isToken)
 
