@@ -15,13 +15,7 @@ import { UserContext } from './contexts/UserContext';
 
 const Routs = () => {
     
-    const navigate = useNavigate();
     const { isToken, idRole } = useContext(UserContext);
-
-    useEffect(() =>{
-        if(!isToken ) navigate('/');
-    }, [isToken]);
-
 
     return (
         <div id={styles.app}>

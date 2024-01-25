@@ -1,6 +1,7 @@
 import React, { ReactNode, createContext, useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import loginService from '../pages/login/login.service';
+import { useNavigate } from 'react-router-dom';
 
 type UserType = {
     userData: {
@@ -22,6 +23,7 @@ export const UserContext = createContext({} as UserType);
 export const ContextUser = ({ children }: { children: ReactNode }) => {
 
     const cookies = new Cookies();
+    const navigate = useNavigate();
     const [userData, setUser] = useState({} as UserData);
     const [isToken, setIsToken] = useState(false);
     const [idRole, setIdRole] = useState(0);
@@ -48,6 +50,7 @@ export const ContextUser = ({ children }: { children: ReactNode }) => {
                 setIsToken(true);
             }else if (token === null) {
                 setIsToken(false);
+                navigate('/')
             }
         });
 
@@ -62,7 +65,6 @@ export const ContextUser = ({ children }: { children: ReactNode }) => {
         }
     })(isToken)
 
-    // console.log("isToken:", isToken);
     // console.log("userData:", Object.keys(userData).length !== 0);
     return <UserContext.Provider value={{ isToken, idRole, userData, setUserData }}>{children}</UserContext.Provider>
 }

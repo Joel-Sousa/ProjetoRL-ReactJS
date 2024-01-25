@@ -7,11 +7,11 @@ import { ContextUser } from './contexts/UserContext';
 const App = () => {
 
   return (
-    <ContextUser>
-        <BrowserRouter>
-          <Routs />
-        </BrowserRouter>
-    </ContextUser>
+    <BrowserRouter>
+      <ContextUser>
+        <Routs />
+      </ContextUser>
+    </BrowserRouter>
   )
 }
 export default App;
