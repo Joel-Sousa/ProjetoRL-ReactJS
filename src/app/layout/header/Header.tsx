@@ -30,7 +30,7 @@ export default function Header() {
     
     const classes = useStyles();
     
-    const { isToken, idRole, userData } = useContext(UserContext);
+    const { isToken, roles_id, userData } = useContext(UserContext);
     
     const exit = async () => {
         const resp = await loginService.logout();
@@ -53,7 +53,7 @@ export default function Header() {
                             <>
                                 {isToken ?
                                     <>
-                                        {idRole === 1 &&
+                                        {roles_id === 1 &&
                                             <Link to='/listUser'>
                                                 <Button variant="contained" >Listar usuarios</Button>
                                             </Link>

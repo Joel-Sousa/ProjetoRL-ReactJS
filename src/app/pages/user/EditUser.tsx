@@ -20,10 +20,10 @@ export default function EditUser() {
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
-    const [idUser, setIdUser] = useState(0);
+    const [users_id, setUsers_id] = useState(0);
 
     const onSubmit = async (data: UserType) => {
-        data.id = idUser;
+        data.id = users_id;
 
         const resp = await userService.updateUserData(data);
 
@@ -43,7 +43,7 @@ export default function EditUser() {
 
     useEffect(() => {
         const id = parseInt(location.pathname.split('/')[2]);
-        setIdUser(id);
+        setUsers_id(id);
 
         if (id !== 0) {
             (async () => {

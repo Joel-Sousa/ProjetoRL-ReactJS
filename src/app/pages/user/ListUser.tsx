@@ -19,6 +19,7 @@ export default function ListUser() {
 
     const listUsers = async () => {
         const resp = await userService.listUserData();
+        console.log("resp:", resp);
         setListUser(resp.userData);
     }
 
@@ -54,7 +55,7 @@ export default function ListUser() {
                         <table className='table table-bordered' border={1}>
                             <thead>
                                 <tr>
-                                    <th>IdUsuario</th>
+                                    <th>Id Usuario</th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Perfil</th>
@@ -66,7 +67,7 @@ export default function ListUser() {
                                 {listUser.length > 0 ?
                                     listUser.map((e: ListUserType, i: number) =>
                                         <tr key={i}>
-                                            <td>{e.idUserData}</td>
+                                            <td>{e.id}</td>
                                             <td>{e.name}</td>
                                             <td>{e.user.email}</td>
                                             <td>{e.user.role.name}</td>

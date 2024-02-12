@@ -9,7 +9,7 @@ type UserType = {
         profile?: string;
     };
     isToken: boolean;
-    idRole: number;
+    roles_id: number;
     setUserData: () => void;
 }
 
@@ -26,7 +26,7 @@ export const ContextUser = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
     const [userData, setUser] = useState({} as UserData);
     const [isToken, setIsToken] = useState(false);
-    const [idRole, setIdRole] = useState(0);
+    const [roles_id, setRoles_id] = useState(0);
 
     // console.log('cookies.get=user', cookies.get('user'))
 
@@ -61,10 +61,10 @@ export const ContextUser = ({ children }: { children: ReactNode }) => {
     (async (isToken) => {
         if (isToken) {
             const resp = await loginService.permission();
-            setIdRole(resp.idRole);
+            setRoles_id(resp.roles_id);
         }
     })(isToken)
 
     // console.log("userData:", Object.keys(userData).length !== 0);
-    return <UserContext.Provider value={{ isToken, idRole, userData, setUserData }}>{children}</UserContext.Provider>
+    return <UserContext.Provider value={{ isToken, roles_id, userData, setUserData }}>{children}</UserContext.Provider>
 }

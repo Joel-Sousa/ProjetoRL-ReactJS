@@ -15,7 +15,7 @@ import { UserContext } from './contexts/UserContext';
 
 const Routs = () => {
     
-    const { isToken, idRole } = useContext(UserContext);
+    const { isToken, roles_id } = useContext(UserContext);
 
     return (
         <div id={styles.app}>
@@ -29,7 +29,7 @@ const Routs = () => {
                         {isToken &&
                             <>
                                 <Route path='/homePage' element={<HomePage />} />
-                                {idRole === 1 &&
+                                {roles_id === 1 &&
                                     <>
                                         <Route path='/listUser' element={<ListUser />} />
                                         <Route path='/editUser/*' element={<EditUser />} />

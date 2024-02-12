@@ -19,7 +19,7 @@ export type UserType = {
 }
 
 export type ListUserType = {
-    idUserData: string;
+    id: string;
     name: string;
     user: {
         id: number;
