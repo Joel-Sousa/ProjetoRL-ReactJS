@@ -19,7 +19,6 @@ export default function ListUser() {
 
     const listUsers = async () => {
         const resp = await userService.listUserData();
-        console.log("resp:", resp);
         setListUser(resp.userData);
     }
 
