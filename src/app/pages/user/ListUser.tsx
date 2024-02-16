@@ -7,6 +7,7 @@ import { Edit } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Toast from '../../components/Toast/Toast';
 import { ListUserType } from '../../types/types';
+import CircularProgressBar from '../../components/CircularProgress/CircularProgressBar';
 
 export default function ListUser() {
 
@@ -16,6 +17,7 @@ export default function ListUser() {
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
+    const [isCircularProgressBar, setIsCircularProgressBar] = useState(false);
 
     const listUsers = async () => {
         const resp = await userService.listUserData();
@@ -25,6 +27,8 @@ export default function ListUser() {
     const deleteUserById = async (id: number) => {
         const alertConfirm = window.confirm('Deseja mesmo remover este usuário?');
         if (alertConfirm) {
+            setIsCircularProgressBar(true);
+
             const resp = await userService.deleteUserDataById(id);
 
             if (resp.response) {
@@ -34,6 +38,7 @@ export default function ListUser() {
                 listUsers();
             }
         }
+        setIsCircularProgressBar(false);
         setIsToast(false);
     }
 
@@ -43,8 +48,8 @@ export default function ListUser() {
 
     return (
         <>
+            <CircularProgressBar open={isCircularProgressBar} />
             <Toast open={isToast} icon={toastIcon} mensagem={toastMessage} timer={3000} />
-
             <div className={styles.section}>
 
                 <Card sx={{ maxWidth: '90%' }}>

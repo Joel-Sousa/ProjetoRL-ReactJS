@@ -8,6 +8,7 @@ import userService from './user.service';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../components/Toast/Toast';
 import { UserType } from '../../types/types';
+import CircularProgressBar from '../../components/CircularProgress/CircularProgressBar';
 
 export default function CreateUser() {
 
@@ -18,11 +19,13 @@ export default function CreateUser() {
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
+    const [isCircularProgressBar, setIsCircularProgressBar] = useState(false)
 
     const onSubmit = async (data: UserType) => {
-
+        setIsCircularProgressBar(true);
+        
         const resp = await userService.createUserData(data);
-
+        
         if (resp.response) {
             setToastMessage('Usuário criado com sucesso!');
             setToastIcon('success');
@@ -31,14 +34,17 @@ export default function CreateUser() {
         }else if(resp.error.erro){
             resp.error.data.forEach((e: {label: string, erro: string}) => {
                 setError(e.label, {message: e.erro})
-              });
+            });
         }
-
+        
+        setIsCircularProgressBar(false);
         setIsToast(false);
     }
 
     return (
         <div className={styles.section}>
+      <CircularProgressBar open={isCircularProgressBar} />
+
             <Toast open={isToast} icon={toastIcon} mensagem={toastMessage} timer={3000} />
             <Card className='cardSection' style={{ width: '40vw' }}>
                 <CardContent>
