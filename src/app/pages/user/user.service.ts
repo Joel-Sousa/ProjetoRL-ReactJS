@@ -38,12 +38,19 @@ class User {
         return resp;
     }
 
-    async deleteUserDataById(id: number){
-        const resp = await api.delete('deleteUserDataById', {params: {id}})
-        .then((resp) => resp.data)
-        .catch((err) => err.response.data.message);
+    async deleteUserDataById(id: number) {
+        const resp = await api.delete('deleteUserDataById', { params: { id } })
+            .then((resp) => resp.data)
+            .catch((err) => err.response.data.message);
 
-    return resp;
+        return resp;
+    }
+
+    async usersPrint() {
+        const resp = await api.get('usersPrint')
+            .then((resp) => resp.data)
+            .catch((err) => err.response.data.message);
+        return resp;
     }
 }
 

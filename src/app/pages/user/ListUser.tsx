@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Toast from '../../components/Toast/Toast';
 import { ListUserType } from '../../types/types';
 import CircularProgressBar from '../../components/CircularProgress/CircularProgressBar';
+import { env } from '../../../env/env';
 
 export default function ListUser() {
 
@@ -44,7 +45,21 @@ export default function ListUser() {
 
     useEffect(() => {
         listUsers();
-    }, [])
+    }, []);
+
+    const usersPrint = async () =>{
+        const resp = await userService.usersPrint();
+
+        const pdfUrl = `${env.fileLink}${resp}`;
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.target = '_blank';
+        link.download = 'certificado.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    }
 
     return (
         <>
@@ -54,7 +69,11 @@ export default function ListUser() {
 
                 <Card sx={{ maxWidth: '90%' }}>
                     <CardContent>
-                        <Typography className='text-center' gutterBottom variant='h5' component='h2'>Listar Usuario</Typography>
+                        <Typography className='text-center' gutterBottom variant='h5' component='h2'>
+                            Listar Usuario
+                            &nbsp;
+                        <Button variant="contained" onClick={usersPrint}>Imprimir Usuarios</Button>
+                </Typography>
 
                         <table className='table table-bordered' border={1}>
                             <thead>
