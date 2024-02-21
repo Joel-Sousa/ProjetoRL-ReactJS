@@ -109,6 +109,11 @@ export default function Header() {
                                     },
                                 }}
                             >
+                                <Link to='/createUser' style={{ textDecoration: 'none', color: 'black' }}>
+                                            <MenuItem onClick={handleClose}>
+                                                Criar Usuario
+                                            </MenuItem>
+                                        </Link>
                                 {isToken ?
                                     <div>
                                         {roles_id === 1 &&
@@ -124,11 +129,6 @@ export default function Header() {
                                     </div>
                                     :
                                     <div>
-                                        <Link to='/createUser' style={{ textDecoration: 'none', color: 'black' }}>
-                                            <MenuItem onClick={handleClose}>
-                                                Criar Usuario
-                                            </MenuItem>
-                                        </Link>
                                         <Link to='/login' style={{ textDecoration: 'none', color: 'black' }}>
                                             <MenuItem onClick={handleClose}>
                                                 Login

@@ -37,6 +37,8 @@ export default function ListUser() {
                 setToastIcon('success');
                 setIsToast(true);
                 listUsers();
+            }else{
+                console.error("resp:", resp);
             }
         }
         setIsCircularProgressBar(false);
@@ -54,11 +56,10 @@ export default function ListUser() {
         const link = document.createElement('a');
         link.href = pdfUrl;
         link.target = '_blank';
-        link.download = 'certificado.pdf';
+        // link.download = 'certificado.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
     }
 
     return (

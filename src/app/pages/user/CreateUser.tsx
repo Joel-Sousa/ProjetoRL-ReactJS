@@ -35,6 +35,8 @@ export default function CreateUser() {
             resp.error.data.forEach((e: {label: string, erro: string}) => {
                 setError(e.label, {message: e.erro})
             });
+        }else{
+            console.error("resp:", resp);
         }
         
         setIsCircularProgressBar(false);
