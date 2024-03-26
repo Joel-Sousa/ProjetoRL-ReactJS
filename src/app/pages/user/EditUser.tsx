@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './createUser.module.css';
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,19 +8,23 @@ import userService from './user.service';
 import Toast from '../../components/Toast/Toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserType } from '../../types/types';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function EditUser() {
+
+    const { isToken, roles_id } = useContext(UserContext);
 
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { register, handleSubmit, setValue } = useForm<UserType>();
+    const { register, handleSubmit, setValue, watch } = useForm<UserType>();
     const { setError, formState: { errors } } = useForm();
 
     const [toastMessage, setToastMessage] = useState('');
     const [toastIcon, setToastIcon] = useState('');
     const [isToast, setIsToast] = useState(false);
     const [users_id, setUsers_id] = useState(0);
+    const [role_id, setRole_id] = useState('');
 
     const onSubmit = async (data: UserType) => {
         data.id = users_id;
@@ -52,11 +56,18 @@ export default function EditUser() {
                 if (!!resp.userData) {
                     setValue('name', resp.userData.name);
                     setValue('email', resp.userData.user.email);
+                    setValue('roles_id', resp.userData.user.roles_id);
+                    setRole_id(resp.userData.user.roles_id);
                 }
             })()
         }
 
     }, [])
+
+    const handleChangePerfil = (e: string) => {
+        setRole_id(e)
+        setValue('roles_id', e)
+    }
 
     return (
         <div className={styles.section}>
@@ -90,6 +101,22 @@ export default function EditUser() {
                                 autoComplete='off'
                                 InputLabelProps={{ shrink: true }}
                             />
+                            {roles_id == 1 &&
+                                <FormControl>
+                                    <InputLabel>Perfil</InputLabel>
+                                    <input {...register('roles_id', { required: false })} defaultValue={role_id} hidden />
+                                    <Select
+                                        {...register('roles_id', { required: false })}
+                                        className='mb-2'
+                                        value={role_id}
+                                        label='Perfil'
+                                        onChange={(e) => handleChangePerfil(e.target.value)}
+                                    >
+                                        <MenuItem value={'1'} >Administrador</MenuItem>
+                                        <MenuItem value={'2'} >Usuario</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            }
 
                             <TextField
                                 {...register('password')}

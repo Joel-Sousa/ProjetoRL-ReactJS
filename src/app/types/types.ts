@@ -16,6 +16,7 @@ export type UserType = {
     name: string; 
     email: string; 
     password: string;
+    roles_id: string;
 }
 
 export type ListUserType = {
