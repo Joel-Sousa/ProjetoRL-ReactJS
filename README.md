@@ -23,3 +23,5 @@
 
 #### Nome das Classes 
 - PascalCase EX: (**NomeDaClasse**)
+
+Versao do node: v14.21.3
